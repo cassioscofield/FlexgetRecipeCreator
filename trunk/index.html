@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	
+		<meta charset="utf-8" />
+		
+		<title>Flexget Recipe Creator</title>
+		
+		<!-- jQuery -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		
+		<!-- Bootstrap -->
+		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<script type="text/javascript" src="js/bootstrap.js"></script>
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+		
+		<script type="text/javascript">
+			$(document).ready(function () {
+				$('#loginModal').modal('show');
+				$( "#feeds" ).hide();
+				$( "#settings" ).hide();
+				$( "#series" ).show();
+			});
+			
+			function showFeeds()
+			{
+				$( "#series" ).hide();
+				$( "#settings" ).hide();
+				$( "#feeds" ).show();
+				
+				$('#settingsButton').removeClass();
+				$('#seriesButton').removeClass();
+				$('#feedsButton').addClass("active");
+			};
+			
+			function showSeries()
+			{
+				$( "#feeds" ).hide();
+				$( "#settings" ).hide();
+				$( "#series" ).show();
+				
+				$('#settingsButton').removeClass();
+				$('#feedsButton').removeClass();
+				$('#seriesButton').addClass("active");
+			};
+			
+			function showSettings()
+			{
+				$( "#feeds" ).hide();
+				$( "#series" ).hide();
+				$( "#settings" ).show();
+				
+				$('#seriesButton').removeClass();
+				$('#feedsButton').removeClass();
+				$('#settingsButton').addClass("active");
+			};
+		</script>
+		
+	</head>
+  
+	<body style="" data-twttr-rendered="true">
+	
+		<div id="wrap">
+			<nav class="navbar navbar-default" role="navigation" style="margin-bottom: 0;">
+	  
+			  <div class="container">
+			  <!-- Brand and toggle get grouped for better mobile display -->
+			  <div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-bootsnipp-collapse">
+				  <span class="sr-only">Toggle navigation</span>
+				  <span class="icon-bar"></span>
+				  <span class="icon-bar"></span>
+				  <span class="icon-bar"></span>
+				</button>
+				<div class="animbrand"><a class="navbar-brand" href="#">Flexget Recipe Creator</a></div>
+			  </div>
+
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse navbar-bootsnipp-collapse">
+					
+					<ul class="nav navbar-nav">
+						<li class="active" id="seriesButton">
+							<a href="#" onclick="showSeries()"><span class="glyphicon glyphicon-play"></span>
+								 Series
+							</a>
+						</li>
+						<li id="feedsButton">
+							<a href="#" onclick="showFeeds()"><span class="glyphicon glyphicon-bullhorn"></span> 
+								 Feeds
+							</a>
+						</li>
+						<li id="settingsButton">
+							<a href="#" onclick="showSettings()"><span class="glyphicon glyphicon-wrench"></span> 
+								 Settings
+							</a>
+						</li>
+					</ul>
+
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							<a href="#" onclick="$('#loginModal').modal('show')"><span class="glyphicon glyphicon-log-out"></span> 
+								 Logout
+							</a>
+						</li>
+						<li>
+							<a href="#" onclick="$('#aboutModal').modal('show')"><span class="glyphicon glyphicon-info-sign"></span> 
+								 About
+							</a>
+						</li>
+					</ul>
+					
+				</div>
+				<!-- /.navbar-collapse -->
+			  </div>
+			</nav>
+			
+
+			<div class="container">
+				
+				<!-- Login Modal -->
+				<div class="row" id="login">
+										
+					<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" class="modal fade" id="loginModal">
+					  <div class="modal-dialog">
+						<div class="modal-content">
+
+						  <div class="modal-header">
+							<!--<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>-->
+						  <h4 id="myModalLabel" class="modal-title">Login / Sign-up</h4>
+						  </div>
+						  <div class="modal-body">
+							<form class="form-inline" role="form">
+								<!--<div class="form-group">-->
+									<label for="exampleInputEmail1">Email address</label>
+									<input type="email" class="form-control" id="exampleInputEmail1" placeholder="user@provider.com">
+								<!--</div>-->
+							</form>
+						  </div>
+						  <div class="modal-footer">
+							<button data-dismiss="modal" class="btn btn-default" type="button"> Sign Up </button>
+							<button data-dismiss="modal" class="btn btn-default" type="button"> Login </button>
+						  </div>
+
+						</div><!-- /.modal-content -->
+					  </div><!-- /.modal-dialog -->
+					</div>
+					
+				<div>
+				
+				<!-- About Modal -->
+				<div class="row" id="about">
+				
+					<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" class="modal fade" id="aboutModal">
+					  <div class="modal-dialog">
+						<div class="modal-content">
+
+						  <div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 id="myModalLabel" class="modal-title">About</h4>
+						  </div>
+						  <div class="modal-body">
+							<p>Create by: <b>Cássio Scofield and Rodrigo Hulle</b></p>
+							<p>For more info on flexget go to:<a href="http://flexget.com/"><br/>flexget.com</a></p>
+							<p>If you want to contribute to this project go to:<a href="https://github.com/cassioscofield/FlexgetRecipeCreator"><br/>github.com/cassioscofield/FlexgetRecipeCreator</a></p>
+						  </div>
+						  <div class="modal-footer">
+							<button data-dismiss="modal" class="btn btn-default" type="button"> Close </button>
+						  </div>
+
+						</div><!-- /.modal-content -->
+					  </div><!-- /.modal-dialog -->
+					</div>
+					
+				</div>
+				
+				<div class="row" id="series" style="padding:20px">
+				
+					<br/>
+				
+					<form class="form-inline" role="form">
+						<div class="form-group" style="min-width:34%">
+							<input type="text" class="form-control" id="inputSeriesName" placeholder="enter series name" >
+						</div>
+						<button type="submit" class="btn btn-default">
+							<span class="glyphicon glyphicon-plus"></span>
+							 Add
+						</button>
+					</form>
+					<hr/>
+					
+					<table class="table table-striped table-hover" style="max-width:460px; border-radious:2px">
+						<thead>
+							<tr>
+								<th class="header">Description</th>
+								<th class="header" style="width:50px">Remove</th>
+							</tr>
+						</thead>
+						
+						<tbody>
+							<tr>
+								<td>The Big Bang Theory</td>
+								<td>
+									<button type="submit" class="btn btn-default btn-sm" style="margin-left:12px">
+										<span class="glyphicon glyphicon-minus"></span>
+									</button>
+								</td>
+							</tr>
+							<tr>
+								<td>How I Met Your Mother</td>
+								<td>
+									<button type="submit" class="btn btn-default btn-sm" style="margin-left:12px">
+										<span class="glyphicon glyphicon-minus"></span>
+									</button>
+								</td>
+							</tr>
+							<tr>
+								<td>New Girl</td>
+								<td>
+									<button type="submit" class="btn btn-default btn-sm" style="margin-left:12px">
+										<span class="glyphicon glyphicon-minus"></span>
+									</button>
+								</td>
+							</tr>
+							<tr>
+								<td>Two and a Half Men</td>
+								<td>
+									<button type="submit" class="btn btn-default btn-sm" style="margin-left:12px">
+										<span class="glyphicon glyphicon-minus"></span>
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					
+				</div>
+				
+				<div class="row" id="feeds" style="padding:20px">
+				
+					<br/>
+				
+					<form class="form-inline" role="form">
+						<div class="form-group" style="min-width:34%">
+							<input type="text" class="form-control" id="inputFeedName" placeholder="enter feed url" >
+						</div>
+						<button type="submit" class="btn btn-default">
+							<span class="glyphicon glyphicon-plus"></span>
+							 Add
+						</button>
+					</form>
+					<hr/>
+					
+					<table class="table table-striped table-hover" style="max-width:460px; border-radious:2px">
+						<thead>
+							<tr>
+								<th class="header">Priority</th>
+								<th class="header">URL</th>
+								<th class="header" style="width:50px">Up</th>
+								<th class="header" style="width:50px">Down</th>
+								<th class="header" style="width:50px">Remove</th>
+							</tr>
+						</thead>
+						
+						<tbody>
+							<tr>
+								<td>1.</td>
+								<td>http://rss.thepiratebay.se/205</td>
+								<td>
+									<button type="submit" class="btn btn-default btn-sm">
+										<span class="glyphicon glyphicon-arrow-up"></span>
+									</button>
+								</td>
+								<td>
+									<button type="submit" class="btn btn-default btn-sm">
+										<span class="glyphicon glyphicon-arrow-down"></span>
+									</button>
+								</td>
+								<td>
+									<button type="submit" class="btn btn-default btn-sm" style="margin-left:12px">
+										<span class="glyphicon glyphicon-minus"></span>
+									</button>
+								</td>
+							</tr>
+							<tr>
+								<td>2.</td>
+								<td>http://rss.thepiratebay.se/208</td>
+								<td>
+									<button type="submit" class="btn btn-default btn-sm">
+										<span class="glyphicon glyphicon-arrow-up"></span>
+									</button>
+								</td>
+								<td>
+									<button type="submit" class="btn btn-default btn-sm">
+										<span class="glyphicon glyphicon-arrow-down"></span>
+									</button>
+								</td>
+								<td>
+									<button type="submit" class="btn btn-default btn-sm" style="margin-left:12px">
+										<span class="glyphicon glyphicon-minus"></span>
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					
+				</div>
+				
+				<div class="row" id="settings" style="padding:20px">
+				
+					<br/>
+				
+					<form class="form-inline" role="form">
+						<div class="form-group" style="min-width:42%">
+							<label for="inputSettingsFolder">Torrent Download Directory</label>
+							<input type="text" class="form-control" id="inputSettingsFolder" placeholder="/mnt/data/Series" >
+						</div>
+					</form>
+					
+					<br/><hr/>
+					
+					<form class="form-inline" role="form">
+						<div class="form-group" style="min-width:49%">
+							<label for="inputSettingsFolder">Schedule Interval</label>
+							<br/>
+							<input type="number" min="1" class="form-control" id="inputInteval" placeholder="15" style="width:242px;margin-top:5px">
+							<select class="form-control" id="inputIntevalType" style="width:242px;margin-top:5px">
+							  <option>minutes</option>
+							  <option>hours</option>
+							  <option>days</option>
+							</select>
+						</div>
+					</form>
+					
+					<br/><hr/>
+					
+					<form class="form-inline" role="form">
+						<div class="form-group" style="min-width:49%">
+							<label for="inputSettingsFolder">Quality Range</label>
+							<br/>
+							<select class="form-control" id="inputIntevalType" style="width:234px;margin-top:5px">
+							  <option>No Low Limit</option>
+							  <option>240p</option>
+							  <option>360p</option>
+							  <option>480p</option>
+							  <option>720p</option>
+							  <option>1080p</option>
+							</select>
+							 to 
+							<select class="form-control" id="inputIntevalType" style="width:234px;margin-top:5px">
+							  <option>No High Limit</option>
+							  <option>240p</option>
+							  <option>360p</option>
+							  <option>480p</option>
+							  <option>720p</option>
+							  <option>1080p</option>
+							</select>
+						</div>
+					</form>
+					<hr/>
+					
+				</div>
+				
+			</div>
+			
+		</div>
+		
+		
+	</body>
+	
+</html>
