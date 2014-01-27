@@ -63,6 +63,13 @@ function Recipe()
 			}
 		}
 		
+		if(qualityRangeMin!="NONE" && qualityRangeMax!="NONE")
+			templateString += "\n    quality: " + qualityRangeMin + "-" + qualityRangeMax;
+		else if(qualityRangeMin!="NONE")
+			templateString += "\n    quality: " + qualityRangeMin + "+";
+		else if(qualityRangeMax!="NONE")
+			templateString += "\n    quality: " + "<=" + qualityRangeMax;
+		
 		var tasksString = "\n";
 		if(rss.length !=0)
 		{
