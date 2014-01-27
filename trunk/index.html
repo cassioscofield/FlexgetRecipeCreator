@@ -13,14 +13,75 @@
 		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<script type="text/javascript" src="js/bootstrap.js"></script>
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/FileSaver.js"></script>
+		
+		<script type="text/javascript" src="app/Recipe.js"></script>
+		<script type="text/javascript">
+			
+		</script>
 		
 		<script type="text/javascript">
 			$(document).ready(function () {
-				$('#loginModal').modal('show');
+				//$('#loginModal').modal('show');
 				$( "#feeds" ).hide();
 				$( "#settings" ).hide();
 				$( "#series" ).show();
 			});
+			
+			var r = new Recipe();
+			
+			function downloadConfigFile()
+			{
+				var blob = new Blob([r.toConfig().toString()], {type: "application/x-yml;charset=utf-8"});
+				saveAs(blob, "config.yml");
+			};
+			
+			function createRecipe()
+			{
+				// Series
+				for(var i=0;i<document.getElementsByClassName("serie").length;i++)
+					r.addSerie(document.getElementsByClassName("serie")[i].innerHTML);
+				
+				// RSS
+				for(var i=0;i<document.getElementsByClassName("rss").length;i++)
+					r.addRss(document.getElementsByClassName("rss")[i].innerHTML);
+				
+				// Settings
+				var directory = document.getElementById("inputDirectory").value;
+				if(directory == "" || directory == null)
+					return alert("Directory is empty");
+				else
+					r.setDirectory(directory);
+				
+				r.setIntervalCount(document.getElementById("inputIntervalCount").value);
+				r.setIntervalType(document.getElementById("inputIntervalType").value);
+				
+				r.setQualityRangeMin(document.getElementById("inputQualityRangeMin").value);
+				r.setQualityRangeMax(document.getElementById("inputQualityRangeMax").value);
+				
+				// Download file
+				console.log(r.toConfig().toString());
+				
+				downloadConfigFile();
+			};
+			
+			function removeClosesTr()
+			{
+				
+			};
+			
+			function addSerie()
+			{
+				var inputSeriesName = document.getElementById("inputSeriesName").value;
+				$( "#tbodySeries" ).append( "<tr><td class='serie'>" + inputSeriesName + "</td><td><button type='submit' class='btn btn-default btn-sm' style='margin-left:12px'><span class='glyphicon glyphicon-minus'></span></button></td></tr>" );
+			};
+			
+			function addRss()
+			{
+				var inputFeedUrl = document.getElementById("inputFeedUrl").value;
+				var number = (document.getElementsByClassName("rss").length + 1) + "."
+				$( "#tbodyRss" ).append("<tr><td>" + number + "</td><td class='rss'>" + inputFeedUrl + "</td><td><button type='submit' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-arrow-up'></span></button></td><td><button type='submit' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-arrow-down'></span></button></td><td><button type='submit' class='btn btn-default btn-sm' style='margin-left:12px'><span class='glyphicon glyphicon-minus'></span></button></td></tr>");
+			};
 			
 			function showFeeds()
 			{
@@ -80,30 +141,37 @@
 					
 					<ul class="nav navbar-nav">
 						<li class="active" id="seriesButton">
-							<a href="#" onclick="showSeries()"><span class="glyphicon glyphicon-play"></span>
+							<a href="#" onclick="showSeries(); return false"><span class="glyphicon glyphicon-play"></span>
 								 Series
 							</a>
 						</li>
 						<li id="feedsButton">
-							<a href="#" onclick="showFeeds()"><span class="glyphicon glyphicon-bullhorn"></span> 
+							<a href="#" onclick="showFeeds(); return false"><span class="glyphicon glyphicon-bullhorn"></span> 
 								 Feeds
 							</a>
 						</li>
 						<li id="settingsButton">
-							<a href="#" onclick="showSettings()"><span class="glyphicon glyphicon-wrench"></span> 
+							<a href="#" onclick="showSettings(); return false"><span class="glyphicon glyphicon-wrench"></span> 
 								 Settings
 							</a>
 						</li>
 					</ul>
 
 					<ul class="nav navbar-nav navbar-right">
+						<!--
 						<li>
-							<a href="#" onclick="$('#loginModal').modal('show')"><span class="glyphicon glyphicon-log-out"></span> 
+							<a href="#" onclick="$('#loginModal').modal('show'); return false"><span class="glyphicon glyphicon-log-out"></span> 
 								 Logout
 							</a>
 						</li>
+						-->
 						<li>
-							<a href="#" onclick="$('#aboutModal').modal('show')"><span class="glyphicon glyphicon-info-sign"></span> 
+							<a href="#" onclick="createRecipe();return false"><span class="glyphicon glyphicon-floppy-disk"></span> 
+								 Download
+							</a>
+						</li>
+						<li>
+							<a href="#" onclick="$('#aboutModal').modal('show'); return false"><span class="glyphicon glyphicon-info-sign"></span> 
 								 About
 							</a>
 						</li>
@@ -181,10 +249,12 @@
 						<div class="form-group" style="min-width:34%">
 							<input type="text" class="form-control" id="inputSeriesName" placeholder="enter series name" >
 						</div>
-						<button type="submit" class="btn btn-default">
+						<a href="#">
+						<button type="submit" class="btn btn-default" onclick="addSerie(); return false">
 							<span class="glyphicon glyphicon-plus"></span>
 							 Add
 						</button>
+						</a>
 					</form>
 					<hr/>
 					
@@ -196,9 +266,9 @@
 							</tr>
 						</thead>
 						
-						<tbody>
+						<tbody id="tbodySeries">
 							<tr>
-								<td>The Big Bang Theory</td>
+								<td class="serie">The Big Bang Theory</td>
 								<td>
 									<button type="submit" class="btn btn-default btn-sm" style="margin-left:12px">
 										<span class="glyphicon glyphicon-minus"></span>
@@ -206,7 +276,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td>How I Met Your Mother</td>
+								<td class="serie">How I Met Your Mother</td>
 								<td>
 									<button type="submit" class="btn btn-default btn-sm" style="margin-left:12px">
 										<span class="glyphicon glyphicon-minus"></span>
@@ -214,7 +284,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td>New Girl</td>
+								<td class="serie">New Girl</td>
 								<td>
 									<button type="submit" class="btn btn-default btn-sm" style="margin-left:12px">
 										<span class="glyphicon glyphicon-minus"></span>
@@ -222,7 +292,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td>Two and a Half Men</td>
+								<td class="serie">Two and a Half Men</td>
 								<td>
 									<button type="submit" class="btn btn-default btn-sm" style="margin-left:12px">
 										<span class="glyphicon glyphicon-minus"></span>
@@ -240,9 +310,9 @@
 				
 					<form class="form-inline" role="form">
 						<div class="form-group" style="min-width:34%">
-							<input type="text" class="form-control" id="inputFeedName" placeholder="enter feed url" >
+							<input type="text" class="form-control" id="inputFeedUrl" placeholder="enter feed url" >
 						</div>
-						<button type="submit" class="btn btn-default">
+						<button type="submit" class="btn btn-default" onclick="addRss(); return false">
 							<span class="glyphicon glyphicon-plus"></span>
 							 Add
 						</button>
@@ -260,10 +330,10 @@
 							</tr>
 						</thead>
 						
-						<tbody>
+						<tbody id="tbodyRss">
 							<tr>
 								<td>1.</td>
-								<td>http://rss.thepiratebay.se/205</td>
+								<td class="rss">http://rss.thepiratebay.se/205</td>
 								<td>
 									<button type="submit" class="btn btn-default btn-sm">
 										<span class="glyphicon glyphicon-arrow-up"></span>
@@ -282,7 +352,7 @@
 							</tr>
 							<tr>
 								<td>2.</td>
-								<td>http://rss.thepiratebay.se/208</td>
+								<td  class="rss">http://rss.thepiratebay.se/208</td>
 								<td>
 									<button type="submit" class="btn btn-default btn-sm">
 										<span class="glyphicon glyphicon-arrow-up"></span>
@@ -311,7 +381,7 @@
 					<form class="form-inline" role="form">
 						<div class="form-group" style="min-width:42%">
 							<label for="inputSettingsFolder">Torrent Download Directory</label>
-							<input type="text" class="form-control" id="inputSettingsFolder" placeholder="/mnt/data/Series" >
+							<input type="text" class="form-control" id="inputDirectory" placeholder="/mnt/data/Series" >
 						</div>
 					</form>
 					
@@ -321,8 +391,8 @@
 						<div class="form-group" style="min-width:49%">
 							<label for="inputSettingsFolder">Schedule Interval</label>
 							<br/>
-							<input type="number" min="1" class="form-control" id="inputInteval" placeholder="15" style="width:242px;margin-top:5px">
-							<select class="form-control" id="inputIntevalType" style="width:242px;margin-top:5px">
+							<input type="number" min="1" class="form-control" id="inputIntervalCount" placeholder="30" style="width:242px;margin-top:5px" value="30">
+							<select class="form-control" id="inputIntervalType" style="width:242px;margin-top:5px" value="minutes">
 							  <option>minutes</option>
 							  <option>hours</option>
 							  <option>days</option>
@@ -336,8 +406,8 @@
 						<div class="form-group" style="min-width:49%">
 							<label for="inputSettingsFolder">Quality Range</label>
 							<br/>
-							<select class="form-control" id="inputIntevalType" style="width:234px;margin-top:5px">
-							  <option>No Low Limit</option>
+							<select class="form-control" id="inputQualityRangeMin" style="width:234px;margin-top:5px">
+							  <option value="NONE">No Low Limit</option>
 							  <option>240p</option>
 							  <option>360p</option>
 							  <option>480p</option>
@@ -345,8 +415,8 @@
 							  <option>1080p</option>
 							</select>
 							 to 
-							<select class="form-control" id="inputIntevalType" style="width:234px;margin-top:5px">
-							  <option>No High Limit</option>
+							<select class="form-control" id="inputQualityRangeMax" style="width:234px;margin-top:5px">
+							  <option value="NONE">No High Limit</option>
 							  <option>240p</option>
 							  <option>360p</option>
 							  <option>480p</option>
