@@ -63,13 +63,13 @@ function Recipe()
 			}
 		}
 		
-		var tasksString = "\n\n";
+		var tasksString = "\n";
 		if(rss.length !=0)
 		{
+			tasksString += "\ntasks:";
 			for(var i=0; i <rss.length;i++)
 			{
-				tasksString += "tasks:";
-				tasksString += "\n  task"+(i+1);
+				tasksString += "\n  task"+(i+1) + ":";
 				tasksString += "\n    priority: " + (i+1);
 				tasksString += "\n    rss: " + rss[i];
 				tasksString += "\n    template: tv";

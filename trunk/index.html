@@ -16,17 +16,10 @@
 		<script type="text/javascript" src="js/FileSaver.js"></script>
 		
 		<script type="text/javascript" src="app/Recipe.js"></script>
-		<script type="text/javascript">
-			
-		</script>
 		
 		<script type="text/javascript">
-			$(document).ready(function () {
-				//$('#loginModal').modal('show');
-				$( "#feeds" ).hide();
-				$( "#settings" ).hide();
-				$( "#series" ).show();
-			});
+		
+			// Create recipe and download file
 			
 			var r = new Recipe();
 			
@@ -49,7 +42,7 @@
 				// Settings
 				var directory = document.getElementById("inputDirectory").value;
 				if(directory == "" || directory == null)
-					return alert("Directory is empty");
+					return alert("Torrent Download Directory is empty, to create a valid recipe, you must input a value on the settings page first");
 				else
 					r.setDirectory(directory);
 				
@@ -65,24 +58,59 @@
 				downloadConfigFile();
 			};
 			
-			function removeClosesTr()
+			// Add, remove, reorder Series and RSS
+			
+			function removeSerie(context)
 			{
-				
+				return removeClosesTr(context)
+			};
+			
+			function removeRss(context)
+			{
+				$(context).closest('tr').remove(); 
+				alert('reorder');
+				addOrderOnRssTable();
+				return false;
+			};
+			
+			function removeClosesTr(context)
+			{
+				$(context).closest('tr').remove(); 
+				return false;
+			};
+			
+			function addOrderOnRssTable()
+			{
+				for(var i=0;i<document.getElementsByClassName("rssOrder").length;i++)
+					document.getElementsByClassName("rssOrder")[i].innerHTML = (i+1) + '.';
 			};
 			
 			function addSerie()
 			{
 				var inputSeriesName = document.getElementById("inputSeriesName").value;
-				$( "#tbodySeries" ).append( "<tr><td class='serie'>" + inputSeriesName + "</td><td><button type='submit' class='btn btn-default btn-sm' style='margin-left:12px'><span class='glyphicon glyphicon-minus'></span></button></td></tr>" );
+				$( "#tbodySeries" ).append( "<tr><td class='serie'>" + inputSeriesName + "</td><td><button onclick='removeSerie(this); return false;' type='submit' class='btn btn-default btn-sm' style='margin-left:12px'><span class='glyphicon glyphicon-minus'></span></button></td></tr>" );
+				document.getElementById("inputSeriesName").value = "";
 			};
 			
 			function addRss()
 			{
 				var inputFeedUrl = document.getElementById("inputFeedUrl").value;
 				var number = (document.getElementsByClassName("rss").length + 1) + "."
-				$( "#tbodyRss" ).append("<tr><td>" + number + "</td><td class='rss'>" + inputFeedUrl + "</td><td><button type='submit' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-arrow-up'></span></button></td><td><button type='submit' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-arrow-down'></span></button></td><td><button type='submit' class='btn btn-default btn-sm' style='margin-left:12px'><span class='glyphicon glyphicon-minus'></span></button></td></tr>");
+				$( "#tbodyRss" ).append("<tr><td class='rssOrder'>" + number + "</td><td class='rss'>" + inputFeedUrl + "</td><td><button type='submit' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-arrow-up'></span></button></td><td><button type='submit' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-arrow-down'></span></button></td><td><button onclick='removeRss(this);return false;' type='submit' class='btn btn-default btn-sm' style='margin-left:12px'><span class='glyphicon glyphicon-minus'></span></button></td></tr>");
+				document.getElementById("inputFeedUrl").value = "";
 			};
 			
+			function moveRssUp(context)
+			{
+				alert('up');
+			};
+			
+			function moveRssDown(context)
+			{
+				alert('down');
+			};
+			
+			// Tab show/hide functions
 			function showFeeds()
 			{
 				$( "#series" ).hide();
@@ -115,6 +143,13 @@
 				$('#feedsButton').removeClass();
 				$('#settingsButton').addClass("active");
 			};
+			
+			$(document).ready(function () {
+				//$('#loginModal').modal('show');
+				$( "#feeds" ).hide();
+				$( "#settings" ).hide();
+				$( "#series" ).show();
+			});
 		</script>
 		
 	</head>
@@ -227,7 +262,8 @@
 							<h4 id="myModalLabel" class="modal-title">About</h4>
 						  </div>
 						  <div class="modal-body">
-							<p>Create by: <b>Cássio Scofield and Rodrigo Hulle</b></p>
+							<p>Create by: <b>Cássio Scofield</b></p>
+							<p>Special thanks to: Rodrigo Hulle and Talles Caceta</p>
 							<p>For more info on flexget go to:<a href="http://flexget.com/"><br/>flexget.com</a></p>
 							<p>If you want to contribute to this project go to:<a href="https://github.com/cassioscofield/FlexgetRecipeCreator"><br/>github.com/cassioscofield/FlexgetRecipeCreator</a></p>
 						  </div>
@@ -270,7 +306,7 @@
 							<tr>
 								<td class="serie">The Big Bang Theory</td>
 								<td>
-									<button type="submit" class="btn btn-default btn-sm" style="margin-left:12px">
+									<button type="submit" class="btn btn-default btn-sm" style="margin-left:12px" onclick="removeSeries(this)">
 										<span class="glyphicon glyphicon-minus"></span>
 									</button>
 								</td>
@@ -278,7 +314,7 @@
 							<tr>
 								<td class="serie">How I Met Your Mother</td>
 								<td>
-									<button type="submit" class="btn btn-default btn-sm" style="margin-left:12px">
+									<button type="submit" class="btn btn-default btn-sm" style="margin-left:12px" onclick="removeSeries(this)">
 										<span class="glyphicon glyphicon-minus"></span>
 									</button>
 								</td>
@@ -286,7 +322,7 @@
 							<tr>
 								<td class="serie">New Girl</td>
 								<td>
-									<button type="submit" class="btn btn-default btn-sm" style="margin-left:12px">
+									<button type="submit" class="btn btn-default btn-sm" style="margin-left:12px" onclick="removeSeries(this)">
 										<span class="glyphicon glyphicon-minus"></span>
 									</button>
 								</td>
@@ -294,7 +330,7 @@
 							<tr>
 								<td class="serie">Two and a Half Men</td>
 								<td>
-									<button type="submit" class="btn btn-default btn-sm" style="margin-left:12px">
+									<button type="submit" class="btn btn-default btn-sm" style="margin-left:12px" onclick="removeSeries(this)">
 										<span class="glyphicon glyphicon-minus"></span>
 									</button>
 								</td>
@@ -332,39 +368,96 @@
 						
 						<tbody id="tbodyRss">
 							<tr>
-								<td>1.</td>
+								<td class='rssOrder'>1.</td>
 								<td class="rss">http://rss.thepiratebay.se/205</td>
 								<td>
-									<button type="submit" class="btn btn-default btn-sm">
+									<button type="submit" class="btn btn-default btn-sm" onclick="moveRssUp(this);return false;">
 										<span class="glyphicon glyphicon-arrow-up"></span>
 									</button>
 								</td>
 								<td>
-									<button type="submit" class="btn btn-default btn-sm">
+									<button type="submit" class="btn btn-default btn-sm" onclick="moveRssDown(this);return false;">
 										<span class="glyphicon glyphicon-arrow-down"></span>
 									</button>
 								</td>
 								<td>
-									<button type="submit" class="btn btn-default btn-sm" style="margin-left:12px">
+									<button onclick='removeRss(this);return false;' type="submit" class="btn btn-default btn-sm" style="margin-left:12px">
 										<span class="glyphicon glyphicon-minus"></span>
 									</button>
 								</td>
 							</tr>
 							<tr>
-								<td>2.</td>
+								<td class='rssOrder'>2.</td>
 								<td  class="rss">http://rss.thepiratebay.se/208</td>
 								<td>
-									<button type="submit" class="btn btn-default btn-sm">
+									<button type="submit" class="btn btn-default btn-sm" onclick="moveRssUp(this);return false;">
 										<span class="glyphicon glyphicon-arrow-up"></span>
 									</button>
 								</td>
 								<td>
-									<button type="submit" class="btn btn-default btn-sm">
+									<button type="submit" class="btn btn-default btn-sm" onclick="moveRssDown(this);return false;">
 										<span class="glyphicon glyphicon-arrow-down"></span>
 									</button>
 								</td>
 								<td>
-									<button type="submit" class="btn btn-default btn-sm" style="margin-left:12px">
+									<button onclick='removeRss(this);return false;' type="submit" class="btn btn-default btn-sm" style="margin-left:12px">
+										<span class="glyphicon glyphicon-minus"></span>
+									</button>
+								</td>
+							</tr>
+							<tr>
+								<td class='rssOrder'>3.</td>
+								<td  class="rss">http://rss.bt-chat.com/?group=3</td>
+								<td>
+									<button type="submit" class="btn btn-default btn-sm" onclick="moveRssUp(this);return false;">
+										<span class="glyphicon glyphicon-arrow-up"></span>
+									</button>
+								</td>
+								<td>
+									<button type="submit" class="btn btn-default btn-sm" onclick="moveRssDown(this);return false;">
+										<span class="glyphicon glyphicon-arrow-down"></span>
+									</button>
+								</td>
+								<td>
+									<button onclick='removeRss(this);return false;' type="submit" class="btn btn-default btn-sm" style="margin-left:12px">
+										<span class="glyphicon glyphicon-minus"></span>
+									</button>
+								</td>
+							</tr>
+							<tr>
+								<td class='rssOrder'>4.</td>
+								<td  class="rss">http://ezrss.it/feed/</td>
+								<td>
+									<button type="submit" class="btn btn-default btn-sm" onclick="moveRssUp(this);return false;">
+										<span class="glyphicon glyphicon-arrow-up"></span>
+									</button>
+								</td>
+								<td>
+									<button type="submit" class="btn btn-default btn-sm" onclick="moveRssDown(this);return false;">
+										<span class="glyphicon glyphicon-arrow-down"></span>
+									</button>
+								</td>
+								<td>
+									<button onclick='removeRss(this);return false;' type="submit" class="btn btn-default btn-sm" style="margin-left:12px">
+										<span class="glyphicon glyphicon-minus"></span>
+									</button>
+								</td>
+							</tr>
+							<tr>
+								<td class='rssOrder'>5.</td>
+								<td  class="rss">http://kat.ph/tv/?rss=1</td>
+								<td>
+									<button type="submit" class="btn btn-default btn-sm" onclick="moveRssUp(this);return false;">
+										<span class="glyphicon glyphicon-arrow-up"></span>
+									</button>
+								</td>
+								<td>
+									<button type="submit" class="btn btn-default btn-sm" onclick="moveRssDown(this);return false;">
+										<span class="glyphicon glyphicon-arrow-down"></span>
+									</button>
+								</td>
+								<td>
+									<button onclick='removeRss(this);return false;' type="submit" class="btn btn-default btn-sm" style="margin-left:12px">
 										<span class="glyphicon glyphicon-minus"></span>
 									</button>
 								</td>
@@ -381,7 +474,7 @@
 					<form class="form-inline" role="form">
 						<div class="form-group" style="min-width:42%">
 							<label for="inputSettingsFolder">Torrent Download Directory</label>
-							<input type="text" class="form-control" id="inputDirectory" placeholder="/mnt/data/Series" >
+							<input type="text" class="form-control" id="inputDirectory" placeholder="/mnt/data/Series" value="/mnt/data/Series">
 						</div>
 					</form>
 					
