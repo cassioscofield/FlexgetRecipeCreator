@@ -51,6 +51,8 @@
 				
 				r.setQualityRangeMin(document.getElementById("inputQualityRangeMin").value);
 				r.setQualityRangeMax(document.getElementById("inputQualityRangeMax").value);
+				alert(document.getElementById("inputQualityRangeMin").value);
+				alert(document.getElementById("inputQualityRangeMax").value);
 				
 				// Download file
 				console.log(r.toConfig().toString());
@@ -100,14 +102,22 @@
 				document.getElementById("inputFeedUrl").value = "";
 			};
 			
-			function moveRssUp(context)
-			{
-				alert('up');
-			};
-			
 			function moveRssDown(context)
 			{
-				alert('down');
+				var closestTr = $(context).closest('tr');
+				var closestNextTr = $(context).closest('tr').next()
+				closestTr.remove();
+				closestTr.insertAfter(closestNextTr);
+				addOrderOnRssTable();
+			};
+			
+			function moveRssUp(context)
+			{
+				var closestTr = $(context).closest('tr');
+				var closestNextTr = $(context).closest('tr').prev()
+				closestTr.remove();
+				closestTr.insertBefore(closestNextTr);
+				addOrderOnRssTable();
 			};
 			
 			// Tab show/hide functions
@@ -501,7 +511,6 @@
 							<br/>
 							<select class="form-control" id="inputQualityRangeMin" style="width:234px;margin-top:5px">
 							  <option value="NONE">No Low Limit</option>
-							  <option>240p</option>
 							  <option>360p</option>
 							  <option>480p</option>
 							  <option>720p</option>
@@ -510,7 +519,6 @@
 							 to 
 							<select class="form-control" id="inputQualityRangeMax" style="width:234px;margin-top:5px">
 							  <option value="NONE">No High Limit</option>
-							  <option>240p</option>
 							  <option>360p</option>
 							  <option>480p</option>
 							  <option>720p</option>
