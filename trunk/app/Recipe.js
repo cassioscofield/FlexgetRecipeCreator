@@ -59,7 +59,7 @@ function Recipe()
 			
 			for(var i=0; i <series.length;i++)
 			{
-				templateString += "\n        - " + series[i];
+				templateString += "\n      - " + series[i];
 			}
 		}
 		
@@ -84,7 +84,7 @@ function Recipe()
 			}   
 		}
 		
-		var scheduleString = "\n\nschedule:";
+		var scheduleString = "\n\nschedules:";
 		scheduleString += "\n  - tasks: '*'\n    interval:";
 		scheduleString += "\n      " + intervalType + ": " + intervalCount;
 		
