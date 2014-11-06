@@ -55,8 +55,8 @@ function removeSerie(context)
 
 function removeRss(context)
 {
-	$(context).closest('tr').remove(); 
-	alert('reorder');
+	$(context).closest('tr').remove();
+	console.log('reordering...');
 	addOrderOnRssTable();
 	return false;
 };
@@ -76,16 +76,26 @@ function addOrderOnRssTable()
 function addSerie()
 {
 	var inputSeriesName = document.getElementById("inputSeriesName").value;
-	$( "#tbodySeries" ).append( "<tr><td class='serie'>" + inputSeriesName + "</td><td><button onclick='removeSerie(this); return false;' type='submit' class='btn btn-default btn-sm' style='margin-left:12px'><span class='glyphicon glyphicon-minus'></span></button></td></tr>" );
+	addSerieWithDescription(inputSeriesName);
 	document.getElementById("inputSeriesName").value = "";
+};
+
+function addSerieWithDescription(desciption)
+{
+	$( "#tbodySeries" ).append( "<tr><td class='serie'>" + desciption + "</td><td><button onclick='removeSerie(this); return false;' type='submit' class='btn btn-default btn-sm' style='margin-left:12px'><span class='glyphicon glyphicon-minus'></span></button></td></tr>" );
 };
 
 function addRss()
 {
 	var inputFeedUrl = document.getElementById("inputFeedUrl").value;
-	var number = (document.getElementsByClassName("rss").length + 1) + "."
-	$( "#tbodyRss" ).append("<tr><td class='rssOrder'>" + number + "</td><td class='rss'>" + inputFeedUrl + "</td><td><button type='submit' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-arrow-up'></span></button></td><td><button type='submit' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-arrow-down'></span></button></td><td><button onclick='removeRss(this);return false;' type='submit' class='btn btn-default btn-sm' style='margin-left:12px'><span class='glyphicon glyphicon-minus'></span></button></td></tr>");
+	addRssWithUrl(inputFeedUrl);
 	document.getElementById("inputFeedUrl").value = "";
+};
+
+function addRssWithUrl(url)
+{
+	var number = (document.getElementsByClassName("rss").length + 1) + "."
+	$( "#tbodyRss" ).append("<tr><td class='rssOrder'>" + number + "</td><td class='rss'>" + url + "</td><td><button type='submit' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-arrow-up'></span></button></td><td><button type='submit' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-arrow-down'></span></button></td><td><button onclick='removeRss(this);return false;' type='submit' class='btn btn-default btn-sm' style='margin-left:12px'><span class='glyphicon glyphicon-minus'></span></button></td></tr>");
 };
 
 function moveRssDown(context)
